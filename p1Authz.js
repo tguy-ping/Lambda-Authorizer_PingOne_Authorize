@@ -5,7 +5,6 @@ const oidc = require('oidc');
 const config = {};
 config.service_url_base = process.env.P1_AUTHZ_SERVICE_HOST;
 config.envId = process.env.P1_ENV_ID;
-config.auth_header = process.env.SECRET_HEADER_NAME;
 config.shared_secret = process.env.SHARED_SECRET;
 
 const convertRequestHeaders = (requestHeaders) => {
@@ -50,7 +49,7 @@ const decisionRequest = ({payload}) => {
             'Content-Length': postBody.length,
         }
     };
-    options.headers[config.auth_header] = config.shared_secret;
+    options.headers['CLIENT-TOKEN'] = config.shared_secret;
     
     return new Promise((resolve, reject) => {
         const req = https.request(options, resp => {
